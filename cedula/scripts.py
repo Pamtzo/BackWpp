@@ -3,19 +3,10 @@ import re
 import base64
 import time
 import PIL
-from qrtools.qrtools import QR
 from selenium import webdriver
 
 driver = webdriver.Firefox()
 driver.get("https://online-barcode-reader.inliteresearch.com/")
-
-def readQr(img_data):
-    with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(img_data))
-    my_QR = QR(filename = "./qr.png")
-    if my_QR.decode():
-        return my_QR.data 
-    return False
 
 def getstring(img_data):
     start_time = time.time()
