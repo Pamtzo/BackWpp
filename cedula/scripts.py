@@ -1,0 +1,73 @@
+import os
+import re
+import base64
+import time
+import PIL
+from qrtools.qrtools import QR
+from selenium import webdriver
+
+driver = webdriver.Firefox()
+driver.get("https://online-barcode-reader.inliteresearch.com/")
+
+def readQr(img_data):
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(img_data))
+    my_QR = QR(filename = "./qr.png")
+    if my_QR.decode():
+        return my_QR.data 
+    return False
+
+def getstring(img_data):
+    start_time = time.time()
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(img_data))
+    print("--- %s seconds saving ---" % (time.time() - start_time))
+    driver.find_element_by_id("MainContent_chkPdf417").click()
+    driver.find_element_by_id("MainContent_FileUpload1").send_keys(os.getcwd()+"/imageToSave.png")
+    driver.find_element_by_id("MainContent_cmdReadBarcodesRed").click()
+    print("--- %s seconds filling  ---" % (time.time() - start_time))
+    while True:
+        try:
+            a = driver.find_element_by_id("MainContent_DataList1_Label5_0").text
+            driver.get("https://online-barcode-reader.inliteresearch.com/")
+            return a
+        except:
+            pass
+
+def getdata(img_data):
+    start_time = time.time()
+    decode = getstring(img_data)
+    print("--- %s seconds reading ---" % (time.time() - start_time))
+    cc=findcc(decode[287:307])
+    lastname1 = findlastname(decode[287:307],decode[364:384])
+    lastname2 = findlastname(decode[441:461],'')
+    name1 = findname(decode[518:538], decode[595:605])
+    name2 = findname(decode[606:615], decode[672:692])
+    date = finddate(decode[749:769])
+    gender = getgender(decode[749:769][-11])
+    blood = decode[826:846][8:11]
+    print("--- %s seconds total ---" % (time.time() - start_time))
+    return {"cc":cc,"name":[name1,name2], "last":[lastname1,lastname2], 'date':date, 'gender':gender, 'blood':blood}
+
+def finddate(line):
+    return {"day":line[-4:-2],"month":line[-6:-4], "year":line[-10:-6]}
+
+def getgender(word):
+    if word=='F':
+        return 'Femenino'
+    return 'Masculino'
+
+def findcc(line):
+    cc=re.sub('[^0-9]','', line)
+    for i in range(len(cc)):
+        if cc[i] != '0':
+            return cc[i:]
+    return '0'
+
+def findlastname(line1,line2):
+    line=line1+line2
+    return re.sub('[^A-Z]','', line)
+
+def findname(semiline1,semiline2):
+    line=semiline1+semiline2
+    return re.sub('[^A-Z]','', line)
