@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.views import APIView
 
-from .scripts import readQr
+from .scripts import getdata
 from rest_framework.response import Response
 
 class cedula(APIView):
@@ -11,4 +11,4 @@ class cedula(APIView):
         pass
 
     def post(self, request):
-        return Response(readQr(request.POST['data']))
+        return Response(getdata(request.POST['data']))

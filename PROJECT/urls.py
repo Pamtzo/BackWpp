@@ -16,16 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from login.views import loginlist
-from contacts.views import contactlist
-from messages.views import messagelist
 from cedula.views import cedula
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('code/', loginlist.as_view()),
-    path('contacts/', contactlist.as_view()),
-    path('message/', messagelist.as_view()),
     path('cc/', cedula.as_view())
 ]
 
