@@ -15,11 +15,9 @@ def getstring(img_data):
     start_time = time.time()
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(img_data))
-    print("--- %s seconds saving ---" % (time.time() - start_time))
     driver.find_element_by_id("MainContent_chkPdf417").click()
     driver.find_element_by_id("MainContent_FileUpload1").send_keys(os.getcwd()+"/imageToSave.png")
     driver.find_element_by_id("MainContent_cmdReadBarcodesRed").click()
-    print("--- %s seconds filling  ---" % (time.time() - start_time))
     while True:
         try:
             a = driver.find_element_by_id("MainContent_DataList1_Label5_0").text
@@ -31,7 +29,6 @@ def getstring(img_data):
 def getdata(img_data):
     start_time = time.time()
     decode = getstring(img_data)
-    print("--- %s seconds reading ---" % (time.time() - start_time))
     cc=findcc(decode[287:307])
     lastname1 = findlastname(decode[287:307],decode[364:384])
     lastname2 = findlastname(decode[441:461],'')
@@ -40,8 +37,7 @@ def getdata(img_data):
     date = finddate(decode[749:769])
     gender = getgender(decode[749:769][-11])
     blood = decode[826:846][8:11]
-    print("--- %s seconds total ---" % (time.time() - start_time))
-    return {"cc":cc,"name":[name1,name2], "last":[lastname1,lastname2], 'date':date, 'gender':gender, 'blood':blood}
+    return {"time":time.time() - start_time,"cc":cc,"name":[name1,name2], "last":[lastname1,lastname2], 'date':date, 'gender':gender, 'blood':blood}
 
 def finddate(line):
     return {"day":line[-4:-2],"month":line[-6:-4], "year":line[-10:-6]}
