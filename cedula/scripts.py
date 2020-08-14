@@ -12,11 +12,12 @@ driver = webdriver.Firefox()
 driver.get("https://online-barcode-reader.inliteresearch.com/")
 
 def getstring(img_data):
+    from django.conf import settings
     start_time = time.time()
-    with open("imageToSave.png", "wb") as fh:
+    with open(settings.BASE_DIR + "imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(img_data))
     driver.find_element_by_id("MainContent_chkPdf417").click()
-    driver.find_element_by_id("MainContent_FileUpload1").send_keys(os.getcwd()+"/imageToSave.png")
+    driver.find_element_by_id("MainContent_FileUpload1").send_keys(settings.BASE_DIR +"imageToSave.png")
     driver.find_element_by_id("MainContent_cmdReadBarcodesRed").click()
     while True:
         try:
