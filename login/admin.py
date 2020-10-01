@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Username
+from .models import Pedido, Sucursal
 
-admin.site.register(Username)
+admin.site.register(Pedido)
+admin.site.register(Sucursal)
