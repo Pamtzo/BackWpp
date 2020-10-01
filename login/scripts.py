@@ -149,7 +149,7 @@ def states(cellphone, contact, message):
     elif PROCESS[cellphone][contact] == 3:
         if message == 1:
             Pedido.objects.create(restaurant=cellphone ,cellphone=delivery.cellphone, value=delivery.value, name=delivery.name, sucursal=delivery.sucursal, delivery=delivery.delivery, direction=delivery.direction)
-            send_message(cellphone, contact, "Su pedido a sido realizado")
+            send_message(cellphone, contact, "Su pedido ha sido realizado")
         if message == 2:
             WAIT[cellphone].append(contact)
         del PROCESS[cellphone][contact]
@@ -196,7 +196,7 @@ def get_last_pedido(cell, contact):
 def bot(cell, wait):
     while True:
         try:
-            contacts = ['+57 320 8917585']#get_new_messages(cell)
+            contacts = get_new_messages(cell)
             for contact in contacts:
                 if contact in PROCESS[cell].keys():
                     message=get_last_message(cell, contact)
