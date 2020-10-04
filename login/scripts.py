@@ -13,6 +13,14 @@ from datetime import datetime, timedelta
 import base64
 import _thread
 
+from pyvirtualdisplay import Display
+
+display = Display(visible=0, size=(800, 800))
+display.start()
+
+def createSucursal():
+    Sucursal.objects.create()
+
 def checkLog(user, password):
     user = Sucursal.objects.filter(user=user, password=password).last()
     if user is None:

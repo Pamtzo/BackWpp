@@ -39,8 +39,10 @@ class loginlist(APIView):
         body = json.loads(body_unicode)
         if request.GET['code']=='1':
             send_message(body['cellphone'],body['contact'],body['message'])
-        if request.GET['code']=='2':
+        elif request.GET['code']=='2':
             dispatch(body['pk'], body['contact'], body['cellphone'])
-        if request.GET['code']=='3':
+        elif request.GET['code']=='3':
             create_delivery(body['form'],body['cellphone'])
+        elif request.GET['code']=='4':
+            pass
         return Response({})
