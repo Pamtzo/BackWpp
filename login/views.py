@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.views import APIView
 
-from .scripts import create_new_connection, get_pedidos, dispatch, get_messages, get_contacts
+from .scripts import create_new_connection, get_pedidos, dispatch, get_messages, get_contacts, createSucursal
 from .scripts import replace, get_last_pedido, send_message, create_delivery, checkLog, checkNumber
 from PROJECT.variables import WAIT
 from rest_framework.response import Response
@@ -44,5 +44,5 @@ class loginlist(APIView):
         elif request.GET['code']=='3':
             create_delivery(body['form'],body['cellphone'])
         elif request.GET['code']=='4':
-            pass
+            createSucursal(body['form'])
         return Response({})

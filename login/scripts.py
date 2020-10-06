@@ -18,8 +18,8 @@ from pyvirtualdisplay import Display
 display = Display(visible=0, size=(800, 800))
 display.start()
 
-def createSucursal():
-    Sucursal.objects.create()
+def createSucursal(form):
+    Sucursal.objects.create(user=form['user'], cellphone=form['cellphone'], sucursal=form['sucursal'], password=form['password'])
 
 def checkLog(user, password):
     user = Sucursal.objects.filter(user=user, password=password).last()
