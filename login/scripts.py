@@ -15,7 +15,7 @@ import _thread
 
 from pyvirtualdisplay import Display
 
-display = Display(visible=0, size=(800, 800))
+display = Display(visible=0, size=(900, 900))
 display.start()
 
 def createSucursal(form):
